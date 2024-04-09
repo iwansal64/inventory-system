@@ -1,6 +1,6 @@
 <?php
-require ("./database.php");
-require ("./components.php");
+include_once ("./database.php");
+include_once ("./components.php");
 
 $conn = connect_to_mysql();
 

@@ -1,7 +1,7 @@
 <?php
 
-require ("./components.php");
-require ("./database.php");
+include_once ("./components.php");
+include_once ("./database.php");
 $conn = connect_to_mysql();
 $shelf_datas = get_data($conn, "SELECT * FROM shelf");
 

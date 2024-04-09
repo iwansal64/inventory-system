@@ -1,13 +1,13 @@
 <?php
 
-require ("./functions.php");
+include_once ("./functions.php");
 
 function navbar()
 {
     $navigation_links = array(
         "Warehouse" => "./",
         "Shelf" => "./shelf.php",
-        "Customers" => "./customers.php",
+        "Borrowers" => "./borrowers.php",
         "Admins" => "./admins.php",
         "Timelines" => "./timelines.php"
     );

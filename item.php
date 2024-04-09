@@ -1,7 +1,7 @@
 <?php
 
-require ("./database.php");
-require ("./functions.php");
+include_once ("./database.php");
+include_once ("./functions.php");
 
 $conn = connect_to_mysql();
 
@@ -216,7 +216,7 @@ $shelf_id = $shelf_data["id"];
             <form action="" method="post">
                 <div>
                     <label for="name">Name :</label>
-                    <input type="text" name="name" id="name" placeholder="your name.." required>
+                    <input type="text" name="name" id="name" placeholder="your name.." include_onced>
                 </div>
 
                 <div>
