@@ -44,8 +44,12 @@ if (isset($_POST["i-want-to"])) {
             $end_datetime = $end_date . "T" . $end_time;
 
 
-            if ($item_data["borrowed_count"] >= $item_data["item_quantity"]) {
-                $message = "Item is out of stock. cannot borrow again until previous borrower give the item back.";
+            if ($item_data["borrowed_count"] + $quantity > $item_data["item_quantity"]) {
+                if ($item_data["borrowed_count"] > 0) {
+                    $message = "Item is out of stock. cannot borrow again until previous borrower give the item back.";
+                } else {
+                    $message = "Item is not sufficient!";
+                }
                 $message_duration = 5000;
             } else {
                 $insert_result = insert_data(
@@ -124,8 +128,8 @@ if (isset($_POST["i-want-to"])) {
 
             $found = false;
             foreach ($exist_item_id as $index => $data) {
-                $id = $data["id"];
-                if ($id == $target_id) {
+                $borrow_id = $data["id"];
+                if ($borrow_id == $target_id) {
                     $found = true;
                 }
             }
@@ -187,21 +191,21 @@ $shelf_id = $shelf_data["id"];
         </h1>
         <div class="item-info">
             <?php foreach ($item_data as $key => $value): ?>
-                <div>
-                    <h2 class="key">
-                        <?= underscore_strip($key) ?>
-                    </h2>
-                    <h2 class="value">
-                        <?php if ($key == "item_shelf"): ?>
-                            <a href="./shelf.php?id=<?= $shelf_id ?>">
-                                <?= underscore_strip($value) ?>
-                            </a>
-                        <?php else: ?>
-                            <?= underscore_strip($value) ?>
-                        <?php endif; ?>
+            <div>
+                <h2 class="key">
+                    <?= underscore_strip($key) ?>
+                </h2>
+                <h2 class="value">
+                    <?php if ($key == "item_shelf"): ?>
+                    <a href="./shelf.php?id=<?= $shelf_id ?>">
+                        <?= underscore_strip($value) ?>
+                    </a>
+                    <?php else: ?>
+                    <?= underscore_strip($value) ?>
+                    <?php endif; ?>
 
-                    </h2>
-                </div>
+                </h2>
+            </div>
             <?php endforeach; ?>
         </div>
 
@@ -216,7 +220,7 @@ $shelf_id = $shelf_data["id"];
             <form action="" method="post">
                 <div>
                     <label for="name">Name :</label>
-                    <input type="text" name="name" id="name" placeholder="your name.." include_onced>
+                    <input type="text" name="name" id="name" placeholder="your name.." required>
                 </div>
 
                 <div>
@@ -256,8 +260,8 @@ $shelf_id = $shelf_data["id"];
                     <label for="item-shelf">Item Shelf :</label>
                     <select name="item-shelf" id="item-shelf">
                         <?php foreach ($shelf_datas as $index => $data): ?>
-                            <?php $name = $data["shelf_name"]; ?>
-                            <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
+                        <?php $name = $data["shelf_name"]; ?>
+                        <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -288,13 +292,13 @@ $shelf_id = $shelf_data["id"];
         <div id="message">
             <h1>
                 <?php if (isset($_POST["i-want-to"])): ?>
-                    <?= $message ?>
+                <?= $message ?>
                 <?php endif; ?>
             </h1>
         </div>
 
         <?php if (isset($_POST["i-want-to"])): ?>
-            <?php echo "<script>
+        <?php echo "<script>
         setTimeout(() => {
             document.getElementById(\"message\").classList.add(\"active\");
             setTimeout(() => {
@@ -307,9 +311,9 @@ $shelf_id = $shelf_data["id"];
     </div>
 
     <script>
-        let date_split = new Date().toLocaleDateString().split("/");
-        let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
-        document.getElementById("end-date").value = res;
+    let date_split = new Date().toLocaleDateString().split("/");
+    let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
+    document.getElementById("end-date").value = res;
     </script>
 </body>
 

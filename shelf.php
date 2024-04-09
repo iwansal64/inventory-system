@@ -67,9 +67,9 @@ if (isset($_GET["id"])) {
                             <?= ucwords($value) ?>
                         </div>
                     <?php endforeach; ?>
-                    <?php $id = $data["id"]; ?>
+                    <?php $borrow_id = $data["id"]; ?>
                     <div class="row action-button">
-                        <button onclick="window.location.href='./item.php?id=<?= $id ?>'">Action</button>
+                        <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
                     </div>
                 <?php endforeach; ?>
             </div>

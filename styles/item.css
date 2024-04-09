@@ -59,45 +59,4 @@ div.item-info a {
   width: -moz-fit-content;
   width: fit-content;
   gap: 20px;
-}
-
-.ui {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 50vw;
-  height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  background-color: #333;
-  pointer-events: none;
-  opacity: 0;
-}
-.ui form div:not(.btn) {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-.ui form .btn {
-  margin-top: 50px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 5px;
-  height: -moz-max-content;
-  height: max-content;
-}
-@media (max-width: 600px) {
-  .ui {
-    width: 90vw;
-    height: 90vh;
-  }
-}
-
-.ui.active {
-  pointer-events: visible;
-  opacity: 1;
 }/*# sourceMappingURL=item.css.map */

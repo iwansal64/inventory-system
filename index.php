@@ -33,8 +33,29 @@ $shelf_datas = get_data($conn, "SELECT * FROM shelf ORDER BY id ASC");
         <div class="edit-buttons">
             <button class="add-shelf" onclick="document.getElementById('add-shelf-container').classList.add('active');">Add Shelf +</button>
         </div>
-        <?php if (!table($shelf_datas, "Enter", "./shelf.php")): ?>
-            <h1>No shelf yet..</h1>
+        <?php if (count($shelf_datas) > 0): ?>
+            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($shelf_datas[0]) + 1) ?>;">
+                <?php foreach (array_keys($shelf_datas[0]) as $key): ?>
+                    <div class="header">
+                        <?= underscore_strip($key) ?>
+                    </div>
+                <?php endforeach; ?>
+                <div class="header"></div>
+
+                <?php foreach ($shelf_datas as $index => $data): ?>
+                    <?php foreach ($data as $key => $value): ?>
+                        <div class="row">
+                            <?= ucwords($value) ?>
+                        </div>
+                    <?php endforeach; ?>
+                    <?php $borrow_id = $data["id"]; ?>
+                    <div class="row action-button">
+                        <button onclick="window.location.href='./shelf.php?id=<?= $borrow_id ?>'">Enter</button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <h1>No Shelf Yet..</h1>
         <?php endif; ?>
     </div>
 
