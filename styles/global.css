@@ -1,0 +1,191 @@
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #666;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: calibri;
+  color: white;
+}
+
+html {
+  font-size: 20px;
+}
+@media (max-width: 1000px) {
+  html {
+    font-size: 16px;
+  }
+}
+@media (max-width: 600px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media (max-width: 400px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+body {
+  background-color: #111;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden auto;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  background-color: transparent;
+  border: 2px solid white;
+  padding: 5px;
+  cursor: pointer;
+}
+
+input {
+  background-color: rgba(238, 238, 238, 0.3333333333);
+  padding: 7px;
+  outline: none;
+  border: none;
+}
+
+input::-moz-placeholder {
+  color: #333;
+}
+
+input::placeholder {
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+select {
+  background-color: #333;
+}
+
+option {
+  background-color: #333;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  padding: 20px 50px 0 50px;
+  gap: 10px;
+}
+@media (max-width: 1000px) {
+  nav {
+    padding: 20px 20px 0 20px;
+  }
+}
+@media (max-width: 600px) {
+  nav {
+    padding: 20px 10px 0 0px;
+  }
+}
+nav .top-side {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+nav .top-side .logo {
+  width: 40%;
+  padding: 0 10px;
+}
+nav .top-side .logo h1 {
+  font-size: 2rem;
+  width: -moz-max-content;
+  width: max-content;
+  font-weight: 300;
+}
+nav .top-side .logo h1 span {
+  font-weight: 700;
+}
+nav .top-side .search {
+  width: 90%;
+}
+nav .top-side .search input {
+  width: 100%;
+}
+@media (max-width: 400px) {
+  nav .top-side .search input {
+    position: absolute;
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  nav .top-side .search {
+    width: unset;
+  }
+  nav .top-side .search ~ * {
+    opacity: 1;
+  }
+}
+@media (max-width: 400px) {
+  nav .top-side .search.active input {
+    display: inline-block;
+  }
+}
+@media (max-width: 400px) {
+  nav .top-side .search.active ~ * {
+    opacity: 0;
+  }
+}
+nav .top-side .accounts {
+  width: 40%;
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+}
+nav .top-side .accounts button {
+  display: none;
+}
+@media (max-width: 400px) {
+  nav .top-side .accounts button {
+    display: inline-block;
+  }
+}
+nav .bottom-side ul {
+  display: flex;
+  justify-content: space-between;
+}
+nav .bottom-side ul a {
+  padding: 10px 25px;
+  border: 2px solid transparent;
+  transition-duration: 0.25s;
+}
+nav .bottom-side ul a:hover,
+nav .bottom-side ul a.active {
+  border-bottom-color: white;
+}
+
+#message {
+  position: absolute;
+  opacity: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 60vw;
+  aspect-ratio: 1/1;
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  pointer-events: none;
+  text-align: center;
+}
+
+#message.active {
+  pointer-events: visible;
+  opacity: 1;
+}/*# sourceMappingURL=global.css.map */
