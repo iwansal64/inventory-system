@@ -10,9 +10,9 @@ $conn = connect_to_mysql();
 $message = "";
 $message_duration = 500;
 if (isset($_POST["i_want_to"]) && isset($_POST["borrow_id"]) && isset($_POST["item_name"])) {
-    $i_want_to = $_POST["i_want_to"];
-    $borrow_id = $_POST["borrow_id"];
-    $item_name = $_POST["item_name"];
+    $i_want_to = htmlspecialchars($_POST["i_want_to"]);
+    $borrow_id = htmlspecialchars($_POST["borrow_id"]);
+    $item_name = htmlspecialchars($_POST["item_name"]);
 
     if ($i_want_to == "return") {
         $result = update_data(
@@ -45,9 +45,7 @@ if (isset($_POST["i_want_to"]) && isset($_POST["borrow_id"]) && isset($_POST["it
     }
 }
 
-$borrowers_datas = get_data($conn, "SELECT * FROM borrow");
-
-$i_want_to = "return";
+$borrowers_datas = get_data($conn, "SELECT * FROM borrow ORDER BY id DESC");
 
 ?>
 
@@ -107,7 +105,7 @@ $i_want_to = "return";
 
             <input type="hidden" name="borrow_id" value="-1" id="borrow_id">
             <input type="hidden" name="item_name" value="-1" id="item_name">
-            <input type="hidden" name="i_want_to" value="<?= $i_want_to ?>">
+            <input type="hidden" name="i_want_to" value="return">
             <button type="submit">Sure!</button>
             <button type="button" onclick="document.getElementById('return-ui').classList.remove('active')">Back</button>
         </form>

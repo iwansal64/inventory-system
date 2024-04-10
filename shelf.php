@@ -7,8 +7,8 @@ $shelf_datas = get_data($conn, "SELECT * FROM shelf");
 
 $insert_result = false;
 if (isset($_POST["item_name"]) && isset($_POST["item_shelf_name"])) {
-    $item_name = $_POST["item_name"];
-    $item_shelf_name = $_POST["item_shelf_name"];
+    $item_name = htmlspecialchars($_POST["item_name"]);
+    $item_shelf_name = htmlspecialchars($_POST["item_shelf_name"]);
     $insert_result = insert_data($conn, "items", "(item_name, item_shelf)", "('$item_name', '$item_shelf_name')");
 }
 
@@ -16,7 +16,7 @@ $item_datas = array();
 $shelf_id = false;
 $selected_shelf_name = "";
 if (isset($_GET["id"])) {
-    $shelf_id = $_GET["id"];
+    $shelf_id = htmlspecialchars($_GET["id"]);
     foreach ($shelf_datas as $index => $shelf_data) {
         foreach ($shelf_data as $key => $value) {
             if ($key == "id" && $value == $shelf_id) {

@@ -36,11 +36,11 @@ if (isset($_POST["i-want-to"])) {
     if ($i_want_to == "borrow") {
         if (isset($_POST["name"]) && isset($_POST["quantity"]) && isset($_POST["end-date"]) && isset($_POST["end-time"]) && isset($_POST["item-name"])) {
             $item_data = get_data($conn, "SELECT * FROM items WHERE id=$item_id")[0];
-            $item_name = $_POST["item-name"];
-            $name = $_POST["name"];
-            $quantity = $_POST["quantity"];
-            $end_date = $_POST["end-date"];
-            $end_time = $_POST["end-time"] . ":00";
+            $item_name = htmlspecialchars($_POST["item-name"]);
+            $name = htmlspecialchars($_POST["name"]);
+            $quantity = htmlspecialchars($_POST["quantity"]);
+            $end_date = htmlspecialchars($_POST["end-date"]);
+            $end_time = htmlspecialchars($_POST["end-time"]) . ":00";
             $end_datetime = $end_date . "T" . $end_time;
 
 
@@ -86,9 +86,9 @@ if (isset($_POST["i-want-to"])) {
         }
     } else if ($i_want_to == "edit") {
         if (isset($_POST["item-id-before"]) && isset($_POST["item-name"]) && isset($_POST["item-shelf"])) {
-            $item_name = $_POST["item-name"];
-            $item_shelf = $_POST["item-shelf"];
-            $item_id_before = $_POST["item-id-before"];
+            $item_name = htmlspecialchars($_POST["item-name"]);
+            $item_shelf = htmlspecialchars($_POST["item-shelf"]);
+            $item_id_before = htmlspecialchars($_POST["item-id-before"]);
 
             $found = false;
             foreach ($shelf_datas as $index => $data) {
@@ -122,7 +122,7 @@ if (isset($_POST["i-want-to"])) {
         }
     } else if ($i_want_to == "delete") {
         if (isset($_POST["item-id"])) {
-            $target_id = $_POST["item-id"];
+            $target_id = htmlspecialchars($_POST["item-id"]);
 
             $exist_item_id = get_data($conn, "SELECT id FROM items");
 
@@ -135,7 +135,7 @@ if (isset($_POST["i-want-to"])) {
             }
 
             if ($found) {
-                $item_id = $_GET["id"];
+                $item_id = htmlspecialchars($_GET["id"]);
                 $item_data = get_data($conn, "SELECT * FROM items WHERE id=$item_id")[0];
                 $result = delete_data($conn, "items", "id=$target_id");
 
@@ -191,21 +191,21 @@ $shelf_id = $shelf_data["id"];
         </h1>
         <div class="item-info">
             <?php foreach ($item_data as $key => $value): ?>
-            <div>
-                <h2 class="key">
-                    <?= underscore_strip($key) ?>
-                </h2>
-                <h2 class="value">
-                    <?php if ($key == "item_shelf"): ?>
-                    <a href="./shelf.php?id=<?= $shelf_id ?>">
-                        <?= underscore_strip($value) ?>
-                    </a>
-                    <?php else: ?>
-                    <?= underscore_strip($value) ?>
-                    <?php endif; ?>
+                <div>
+                    <h2 class="key">
+                        <?= underscore_strip($key) ?>
+                    </h2>
+                    <h2 class="value">
+                        <?php if ($key == "item_shelf"): ?>
+                            <a href="./shelf.php?id=<?= $shelf_id ?>">
+                                <?= underscore_strip($value) ?>
+                            </a>
+                        <?php else: ?>
+                            <?= underscore_strip($value) ?>
+                        <?php endif; ?>
 
-                </h2>
-            </div>
+                    </h2>
+                </div>
             <?php endforeach; ?>
         </div>
 
@@ -260,8 +260,8 @@ $shelf_id = $shelf_data["id"];
                     <label for="item-shelf">Item Shelf :</label>
                     <select name="item-shelf" id="item-shelf">
                         <?php foreach ($shelf_datas as $index => $data): ?>
-                        <?php $name = $data["shelf_name"]; ?>
-                        <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
+                            <?php $name = $data["shelf_name"]; ?>
+                            <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -292,13 +292,13 @@ $shelf_id = $shelf_data["id"];
         <div id="message">
             <h1>
                 <?php if (isset($_POST["i-want-to"])): ?>
-                <?= $message ?>
+                    <?= $message ?>
                 <?php endif; ?>
             </h1>
         </div>
 
         <?php if (isset($_POST["i-want-to"])): ?>
-        <?php echo "<script>
+            <?php echo "<script>
         setTimeout(() => {
             document.getElementById(\"message\").classList.add(\"active\");
             setTimeout(() => {
@@ -311,9 +311,9 @@ $shelf_id = $shelf_data["id"];
     </div>
 
     <script>
-    let date_split = new Date().toLocaleDateString().split("/");
-    let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
-    document.getElementById("end-date").value = res;
+        let date_split = new Date().toLocaleDateString().split("/");
+        let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
+        document.getElementById("end-date").value = res;
     </script>
 </body>
 
