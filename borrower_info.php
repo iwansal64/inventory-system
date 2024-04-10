@@ -1,7 +1,10 @@
 <?php
 
-include_once ("./functions.php");
-include_once ("./database.php");
+include_once ("./utilities/functions.php");
+include_once ("./utilities/database.php");
+include_once ("./utilities/security.php");
+
+login_or_redirect();
 
 $conn = connect_to_mysql();
 

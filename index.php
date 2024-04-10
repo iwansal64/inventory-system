@@ -1,7 +1,9 @@
 <?php
-include_once ("./database.php");
-include_once ("./components.php");
+include_once ("./utilities/database.php");
+include_once ("./utilities/components.php");
+include_once ("./utilities/security.php");
 
+login_or_redirect();
 $conn = connect_to_mysql();
 
 $insert_result = false;

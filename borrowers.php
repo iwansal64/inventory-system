@@ -1,8 +1,11 @@
 <?php
 
-include_once ("./database.php");
-include_once ('./functions.php');
-include_once ('./components.php');
+include_once ("./utilities/database.php");
+include_once ('./utilities/functions.php');
+include_once ('./utilities/components.php');
+include_once ("./utilities/security.php");
+
+login_or_redirect();
 
 $conn = connect_to_mysql();
 
@@ -70,49 +73,49 @@ $borrowers_datas = get_data($conn, "SELECT * FROM borrow ORDER BY id DESC");
     );
     ?>
     <?php if (count($borrowers_datas) > 0): ?>
-    <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($borrowers_datas[0]) + 2 - count($key_excpetions)) ?>;">
-        <?php foreach (array_keys($borrowers_datas[0]) as $key): ?>
-        <?php if (!in_array($key, $key_excpetions)): ?>
-        <div class="header">
-            <?= underscore_strip($key) ?>
-        </div>
-        <?php endif; ?>
-        <?php endforeach; ?>
-        <div class="header"></div>
-        <div class="header"></div>
+        <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($borrowers_datas[0]) + 2 - count($key_excpetions)) ?>;">
+            <?php foreach (array_keys($borrowers_datas[0]) as $key): ?>
+                <?php if (!in_array($key, $key_excpetions)): ?>
+                    <div class="header">
+                        <?= underscore_strip($key) ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <div class="header"></div>
+            <div class="header"></div>
 
-        <?php foreach ($borrowers_datas as $index => $data): ?>
-        <?php foreach ($data as $key => $value): ?>
-        <?php if (!in_array($key, $key_excpetions)): ?>
-        <div class="row">
-            <?= ucwords($value) ?>
-        </div>
-        <?php endif; ?>
-        <?php endforeach; ?>
+            <?php foreach ($borrowers_datas as $index => $data): ?>
+                <?php foreach ($data as $key => $value): ?>
+                    <?php if (!in_array($key, $key_excpetions)): ?>
+                        <div class="row">
+                            <?= ucwords($value) ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
 
-        <?php $borrow_status = $data["status"]; ?>
+                <?php $borrow_status = $data["status"]; ?>
 
-        <div class="row action-button">
-            <?php if ($borrow_status == "borrowing"): ?>
-            <?php $borrow_id = $data["id"]; ?>
-            <?php $item_name = $data["item_name"]; ?>
-            <button onclick="
+                <div class="row action-button">
+                    <?php if ($borrow_status == "borrowing"): ?>
+                        <?php $borrow_id = $data["id"]; ?>
+                        <?php $item_name = $data["item_name"]; ?>
+                        <button onclick="
                 document.getElementById('return-ui').classList.add('active'); 
                 document.getElementById('borrow_id').value = '<?= $borrow_id ?>';
                 document.getElementById('item_name').value = '<?= $item_name ?>';
                 ">Return</button>
-            <?php else: ?>
-            <button disabled>Return</button>
-            <?php endif; ?>
+                    <?php else: ?>
+                        <button disabled>Return</button>
+                    <?php endif; ?>
+                </div>
+                <div class="row action-button">
+                    <?php $borrow_id = $data["id"]; ?>
+                    <button onclick="window.location.href='./borrower_info.php?id=<?= $borrow_id ?>';">Info</button>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <div class="row action-button">
-            <?php $borrow_id = $data["id"]; ?>
-            <button onclick="window.location.href='./borrower_info.php?id=<?= $borrow_id?>';">Info</button>
-        </div>
-        <?php endforeach; ?>
-    </div>
     <?php else: ?>
-    <h1>No Shelf Yet..</h1>
+        <h1>No Shelf Yet..</h1>
     <?php endif; ?>
     <div id="return-ui" class="ui">
         <form action="" method="post">

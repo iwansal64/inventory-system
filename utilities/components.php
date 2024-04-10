@@ -1,6 +1,6 @@
 <?php
 
-include_once ("./functions.php");
+include_once ("./utilities/functions.php");
 
 function navbar()
 {
