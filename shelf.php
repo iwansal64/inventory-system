@@ -15,7 +15,7 @@ if (isset($_POST["item_name"]) && isset($_POST["item_shelf_name"])) {
     $insert_result = insert_data($conn, "items", "(item_name, item_shelf)", "('$item_name', '$item_shelf_name')");
 }
 
-$item_datas = array();
+$admin_datas = array();
 $shelf_id = false;
 $selected_shelf_name = "";
 if (isset($_GET["id"])) {
@@ -24,12 +24,12 @@ if (isset($_GET["id"])) {
         foreach ($shelf_data as $key => $value) {
             if ($key == "id" && $value == $shelf_id) {
                 $selected_shelf_name = $shelf_data["shelf_name"];
-                $item_datas = get_data($conn, "SELECT * FROM items WHERE item_shelf='$selected_shelf_name'");
+                $admin_datas = get_data($conn, "SELECT * FROM items WHERE item_shelf='$selected_shelf_name'");
             }
         }
     }
 } else {
-    $item_datas = get_data($conn, "SELECT * FROM items");
+    $admin_datas = get_data($conn, "SELECT * FROM items");
 }
 ?>
 
@@ -55,22 +55,22 @@ if (isset($_GET["id"])) {
         <div class="edit-buttons">
             <button class="add-item" onclick="document.getElementById('add-item-container').classList.add('active');">Add Item +</button>
         </div>
-        <?php if (count($item_datas) > 0): ?>
-            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($item_datas[0]) + 1) ?>;">
-                <?php foreach (array_keys($item_datas[0]) as $key): ?>
+        <?php if (count($admin_datas) > 0): ?>
+            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($admin_datas[0]) + 1) ?>;">
+                <?php foreach (array_keys($admin_datas[0]) as $key): ?>
                     <div class="header">
                         <?= underscore_strip($key) ?>
                     </div>
                 <?php endforeach; ?>
                 <div class="header"></div>
 
-                <?php foreach ($item_datas as $index => $data): ?>
-                    <?php foreach ($data as $key => $value): ?>
+                <?php foreach ($admin_datas as $index => $admin_datas): ?>
+                    <?php foreach ($admin_datas as $key => $value): ?>
                         <div class="row">
                             <?= ucwords($value) ?>
                         </div>
                     <?php endforeach; ?>
-                    <?php $borrow_id = $data["id"]; ?>
+                    <?php $borrow_id = $admin_datas["id"]; ?>
                     <div class="row action-button">
                         <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
                     </div>

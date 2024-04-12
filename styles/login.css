@@ -1,0 +1,37 @@
+div.content-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: max-content;
+    height: max-content;
+}
+
+form {
+    background-color: #333;
+    padding: 50px 100px 120px 100px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title {
+    text-align: center;
+}
+
+.submit {
+    margin-top: 20px;
+    padding: 10px;
+    transition: 0.1s;
+}
+
+.submit:hover {
+    background-color: #fff;
+    color: black;
+}
+
+.input_field:not(.checkbox) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

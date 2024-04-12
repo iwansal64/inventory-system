@@ -94,8 +94,8 @@ if (isset($_POST["i-want-to"])) {
             $item_id_before = htmlspecialchars($_POST["item-id-before"]);
 
             $found = false;
-            foreach ($shelf_datas as $index => $data) {
-                if ($data["shelf_name"] == $item_shelf) {
+            foreach ($shelf_datas as $index => $admins_data) {
+                if ($admins_data["shelf_name"] == $item_shelf) {
                     $found = true;
                 }
             }
@@ -130,8 +130,8 @@ if (isset($_POST["i-want-to"])) {
             $exist_item_id = get_data($conn, "SELECT id FROM items");
 
             $found = false;
-            foreach ($exist_item_id as $index => $data) {
-                $borrow_id = $data["id"];
+            foreach ($exist_item_id as $index => $admins_data) {
+                $borrow_id = $admins_data["id"];
                 if ($borrow_id == $target_id) {
                     $found = true;
                 }
@@ -166,9 +166,9 @@ if (isset($_POST["i-want-to"])) {
 
 $shelf_name = $item_data["item_shelf"];
 $shelf_data = array();
-foreach ($shelf_datas as $index => $data) {
-    if ($data["shelf_name"] == $shelf_name) {
-        $shelf_data = $data;
+foreach ($shelf_datas as $index => $admins_data) {
+    if ($admins_data["shelf_name"] == $shelf_name) {
+        $shelf_data = $admins_data;
     }
 }
 $shelf_id = $shelf_data["id"];
@@ -194,21 +194,21 @@ $shelf_id = $shelf_data["id"];
         </h1>
         <div class="item-info">
             <?php foreach ($item_data as $key => $value): ?>
-                <div>
-                    <h2 class="key">
-                        <?= underscore_strip($key) ?>
-                    </h2>
-                    <h2 class="value">
-                        <?php if ($key == "item_shelf"): ?>
-                            <a href="./shelf.php?id=<?= $shelf_id ?>">
-                                <?= underscore_strip($value) ?>
-                            </a>
-                        <?php else: ?>
-                            <?= underscore_strip($value) ?>
-                        <?php endif; ?>
+            <div>
+                <h2 class="key">
+                    <?= underscore_strip($key) ?>
+                </h2>
+                <h2 class="value">
+                    <?php if ($key == "item_shelf"): ?>
+                    <a href="./shelf.php?id=<?= $shelf_id ?>">
+                        <?= underscore_strip($value) ?>
+                    </a>
+                    <?php else: ?>
+                    <?= underscore_strip($value) ?>
+                    <?php endif; ?>
 
-                    </h2>
-                </div>
+                </h2>
+            </div>
             <?php endforeach; ?>
         </div>
 
@@ -262,9 +262,9 @@ $shelf_id = $shelf_data["id"];
                 <div>
                     <label for="item-shelf">Item Shelf :</label>
                     <select name="item-shelf" id="item-shelf">
-                        <?php foreach ($shelf_datas as $index => $data): ?>
-                            <?php $name = $data["shelf_name"]; ?>
-                            <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
+                        <?php foreach ($shelf_datas as $index => $admins_data): ?>
+                        <?php $name = $admins_data["shelf_name"]; ?>
+                        <option value="<?= $name ?>" <?= $name == $shelf_name ? 'selected' : '' ?>><?= $name ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -295,13 +295,13 @@ $shelf_id = $shelf_data["id"];
         <div id="message">
             <h1>
                 <?php if (isset($_POST["i-want-to"])): ?>
-                    <?= $message ?>
+                <?= $message ?>
                 <?php endif; ?>
             </h1>
         </div>
 
         <?php if (isset($_POST["i-want-to"])): ?>
-            <?php echo "<script>
+        <?php echo "<script>
         setTimeout(() => {
             document.getElementById(\"message\").classList.add(\"active\");
             setTimeout(() => {
@@ -314,9 +314,9 @@ $shelf_id = $shelf_data["id"];
     </div>
 
     <script>
-        let date_split = new Date().toLocaleDateString().split("/");
-        let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
-        document.getElementById("end-date").value = res;
+    let date_split = new Date().toLocaleDateString().split("/");
+    let res = date_split[2] + "-" + date_split[1] + "-" + date_split[0];
+    document.getElementById("end-date").value = res;
     </script>
 </body>
 

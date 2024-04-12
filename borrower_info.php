@@ -87,7 +87,7 @@ $borrowers_data = get_data($conn, "SELECT * FROM borrow WHERE id=$borrowers_id")
         <div class="action-buttons">
             <button class="back" onclick="window.location.href='./borrowers.php'">Back</button>
             <button class="edit" onclick="document.getElementById('edit_ui').classList.add('active')">Edit</button>
-            <button class="delete" onclick="document.getElementById('delete_ui').classList.add('active')">Unreg</button>
+            <button class="delete" onclick="document.getElementById('delete_ui').classList.add('active')">Delete</button>
         </div>
 
         <div id="edit_ui" class="ui">

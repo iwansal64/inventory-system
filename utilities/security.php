@@ -1,9 +1,13 @@
 <?php
 
-include_once ("./database.php");
+include_once ("./utilities/database.php");
+$user_login_delimiter = ";;;";
 
 function check_login()
 {
+    global $user_login_delimiter;
+
+    session_start();
     if (isset($_SESSION["li"]) || isset($_COOKIE["li"])) {
         $login_info = "";
         if (isset($_SESSION["li"])) {
@@ -16,19 +20,19 @@ function check_login()
             return;
         }
 
-        $splitted_login_info = explode("/", $login_info);
-        $hashed_name = $splitted_login_info[0];
-        $hashed_email = $splitted_login_info[1];
-        $hashed_password = $splitted_login_info[2];
+        $splitted_login_info = explode($user_login_delimiter, $login_info);
+        $user_hashed_name = $splitted_login_info[0];
+        $user_hashed_email = $splitted_login_info[1];
+        $user_password = $splitted_login_info[2];
 
         $conn = connect_to_mysql();
-        $result = get_data($conn, "SELECT * FROM 'admin'");
+        $result = get_data($conn, "SELECT * FROM admins");
 
         foreach ($result as $index => $data) {
             if (
-                password_verify($data["name"], $hashed_name) &&
-                password_verify($data["email"], $hashed_email) &&
-                password_verify($data["password"], $hashed_password)
+                password_verify($data["name"], $user_hashed_name) &&
+                password_verify($data["email"], $user_hashed_email) &&
+                password_verify($user_password, $data["password"])
             ) {
                 return true;
             }
