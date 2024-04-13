@@ -35,29 +35,36 @@ $shelf_datas = get_data($conn, "SELECT * FROM shelf ORDER BY id ASC");
         <div class="edit-buttons">
             <button class="add-shelf" onclick="document.getElementById('add-shelf-container').classList.add('active');">Add Shelf +</button>
         </div>
+        <?php $key_excpetions = array("first_add_datetime"); ?>
         <?php if (count($shelf_datas) > 0): ?>
-                <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($shelf_datas[0]) + 1) ?>;">
-                    <?php foreach (array_keys($shelf_datas[0]) as $key): ?>
-                            <div class="header">
-                                <?= underscore_strip($key) ?>
-                            </div>
-                    <?php endforeach; ?>
-                    <div class="header"></div>
+            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($shelf_datas[0]) + 1 - count($key_excpetions)) ?>;">
+                <?php foreach (array_keys($shelf_datas[0]) as $key): ?>
+                    <?php if (in_array($key, $key_excpetions)) {
+                        continue;
+                    } ?>
+                    <div class="header">
+                        <?= underscore_strip($key) ?>
+                    </div>
+                <?php endforeach; ?>
+                <div class="header"></div>
 
-                    <?php foreach ($shelf_datas as $index => $admin_datas): ?>
-                            <?php foreach ($admin_datas as $key => $value): ?>
-                                    <div class="row">
-                                        <?= ucwords($value) ?>
-                                    </div>
-                            <?php endforeach; ?>
-                            <?php $borrow_id = $admin_datas["id"]; ?>
-                            <div class="row action-button">
-                                <button onclick="window.location.href='./shelf.php?id=<?= $borrow_id ?>'">Enter</button>
-                            </div>
+                <?php foreach ($shelf_datas as $index => $admin_datas): ?>
+                    <?php foreach ($admin_datas as $key => $value): ?>
+                        <?php if (in_array($key, $key_excpetions)) {
+                            continue;
+                        } ?>
+                        <div class="row">
+                            <?= ucwords($value) ?>
+                        </div>
                     <?php endforeach; ?>
-                </div>
+                    <?php $borrow_id = $admin_datas["id"]; ?>
+                    <div class="row action-button">
+                        <button onclick="window.location.href='./shelf.php?id=<?= $borrow_id ?>'">Enter</button>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php else: ?>
-                <h1>No Shelf Yet..</h1>
+            <h1>No Shelf Yet..</h1>
         <?php endif; ?>
     </div>
 

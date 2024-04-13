@@ -27,27 +27,27 @@ $admin_datas = get_data($conn, "SELECT * FROM admins");
 
     <div class="content-wrapper">
         <?php if (count($admin_datas) > 0): ?>
-        <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($admin_datas[0]) - 1) ?>;">
-            <?php foreach (array_keys($admin_datas[0]) as $key): ?>
-            <?php if ($key == "password") {
+            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($admin_datas[0]) - 1) ?>;">
+                <?php foreach (array_keys($admin_datas[0]) as $key): ?>
+                    <?php if ($key == "password") {
                         continue;
                     } ?>
-            <div class="header">
-                <?= underscore_strip($key) ?>
-            </div>
-            <?php endforeach; ?>
+                    <div class="header">
+                        <?= underscore_strip($key) ?>
+                    </div>
+                <?php endforeach; ?>
 
-            <?php foreach ($admin_datas as $index => $data): ?>
-            <?php foreach ($data as $key => $value): ?>
-            <?php if ($key == "password") {
+                <?php foreach ($admin_datas as $index => $data): ?>
+                    <?php foreach ($data as $key => $value): ?>
+                        <?php if ($key == "password") {
                             continue;
                         } ?>
-            <div class="row">
-                <?= ucwords($value) ?>
+                        <div class="row">
+                            <?= ucwords($value) ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-            <?php endforeach; ?>
-        </div>
         <?php else: ?>
         <?php endif; ?>
     </div>

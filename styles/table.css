@@ -1,52 +1,52 @@
 .table {
-  width: 90vw;
-  height: 100%;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: transparent;
-  margin-top: 30px;
-  display: grid;
-  grid-auto-flow: row;
-  grid-auto-rows: 100px;
-  row-gap: 5px;
+    width: 90vw;
+    height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: transparent;
+    margin-top: 30px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-rows: 100px;
+    row-gap: 5px;
 }
 @media (max-width: 600px) {
-  .table {
-    grid-auto-rows: 50px;
-  }
+    .table {
+        grid-auto-rows: 50px;
+    }
 }
 .table > * {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.25rem;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    text-align: center;
 }
 .table div.headers {
-  background-color: #555;
-  text-align: center;
-  margin: 0;
+    background-color: #555;
+    text-align: center;
+    margin: 0;
 }
 .table div.header {
-  background-color: transparent;
-  border: 2px solid transparent;
-  border-bottom-color: white;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-bottom-color: white;
 }
 .table div.row {
-  background-color: rgba(255, 255, 255, 0.1333333333);
+    background-color: rgba(255, 255, 255, 0.1333333333);
 }
 .table div.row.action-button > * {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 .table div.row.action-button button {
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  height: 100%;
-  font-size: 1.25rem;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 1.25rem;
 }
 .table div.row.action-button button:hover {
-  background-color: #555;
-}/*# sourceMappingURL=table.css.map */
+    background-color: #555;
+} /*# sourceMappingURL=table.css.map */

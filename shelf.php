@@ -15,7 +15,7 @@ if (isset($_POST["item_name"]) && isset($_POST["item_shelf_name"])) {
     $insert_result = insert_data($conn, "items", "(item_name, item_shelf)", "('$item_name', '$item_shelf_name')");
 }
 
-$admin_datas = array();
+$item_datas = array();
 $shelf_id = false;
 $selected_shelf_name = "";
 if (isset($_GET["id"])) {
@@ -24,12 +24,12 @@ if (isset($_GET["id"])) {
         foreach ($shelf_data as $key => $value) {
             if ($key == "id" && $value == $shelf_id) {
                 $selected_shelf_name = $shelf_data["shelf_name"];
-                $admin_datas = get_data($conn, "SELECT * FROM items WHERE item_shelf='$selected_shelf_name'");
+                $item_datas = get_data($conn, "SELECT * FROM items WHERE item_shelf='$selected_shelf_name'");
             }
         }
     }
 } else {
-    $admin_datas = get_data($conn, "SELECT * FROM items");
+    $item_datas = get_data($conn, "SELECT * FROM items");
 }
 ?>
 
@@ -50,34 +50,41 @@ if (isset($_GET["id"])) {
 
     <div class="content-wrapper">
         <?php if ($selected_shelf_name != ""): ?>
-            <h1 class="shelf-name"><?= ucwords($selected_shelf_name) ?> shelf</h1>
+        <h1 class="shelf-name"><?= ucwords($selected_shelf_name) ?> shelf</h1>
         <?php endif; ?>
         <div class="edit-buttons">
             <button class="add-item" onclick="document.getElementById('add-item-container').classList.add('active');">Add Item +</button>
         </div>
-        <?php if (count($admin_datas) > 0): ?>
-            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($admin_datas[0]) + 1) ?>;">
-                <?php foreach (array_keys($admin_datas[0]) as $key): ?>
-                    <div class="header">
-                        <?= underscore_strip($key) ?>
-                    </div>
-                <?php endforeach; ?>
-                <div class="header"></div>
-
-                <?php foreach ($admin_datas as $index => $admin_datas): ?>
-                    <?php foreach ($admin_datas as $key => $value): ?>
-                        <div class="row">
-                            <?= ucwords($value) ?>
-                        </div>
-                    <?php endforeach; ?>
-                    <?php $borrow_id = $admin_datas["id"]; ?>
-                    <div class="row action-button">
-                        <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
-                    </div>
-                <?php endforeach; ?>
+        <?php $key_excpetions = array("first_add_datetime"); ?>
+        <?php if (count($item_datas) > 0): ?>
+        <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($item_datas[0]) + 1 - count($key_excpetions)) ?>;">
+            <?php foreach (array_keys($item_datas[0]) as $key): ?>
+            <?php if (in_array($key, $key_excpetions)) {
+                        continue;
+                    } ?>
+            <div class="header">
+                <?= underscore_strip($key) ?>
             </div>
+            <?php endforeach; ?>
+            <div class="header"></div>
+
+            <?php foreach ($item_datas as $index => $item_data): ?>
+            <?php foreach ($item_data as $key => $value): ?>
+            <?php if (in_array($key, $key_excpetions)) {
+                            continue;
+                        } ?>
+            <div class="row">
+                <?= ucwords($value) ?>
+            </div>
+            <?php endforeach; ?>
+            <?php $borrow_id = $item_data["id"]; ?>
+            <div class="row action-button">
+                <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
+            </div>
+            <?php endforeach; ?>
+        </div>
         <?php else: ?>
-            <h1>No Item Yet..</h1>
+        <h1>No Item Yet..</h1>
         <?php endif; ?>
     </div>
 
@@ -91,9 +98,9 @@ if (isset($_GET["id"])) {
                 <label for="item_shelf_name">Item Table Group :</label>
                 <select name="item_shelf_name" id="item_shelf_name">
                     <?php foreach ($shelf_datas as $shelf_data): ?>
-                        <option value="<?= $shelf_data["shelf_name"] ?>" <?= $shelf_data["shelf_name"] == $selected_shelf_name ? "selected" : "" ?>>
-                            <?= $shelf_data["shelf_name"] ?>
-                        </option>
+                    <option value="<?= $shelf_data["shelf_name"] ?>" <?= $shelf_data["shelf_name"] == $selected_shelf_name ? "selected" : "" ?>>
+                        <?= $shelf_data["shelf_name"] ?>
+                    </option>
                     <?php endforeach; ?>
                 </select>
             </div>
