@@ -1,57 +1,57 @@
-#add-item-container {
-  opacity: 0;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  background-color: #222;
-  width: 90vw;
-  height: 90vh;
-  pointer-events: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: 0.4s;
+.container {
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: #222;
+    width: 90vw;
+    height: 90vh;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: 0.4s;
 }
-#add-item-container form {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.container form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-#add-item-container form > * {
-  display: flex;
-  flex-direction: column;
+.container form > * {
+    display: flex;
+    flex-direction: column;
 }
-#add-item-container form > button[type=submit] {
-  margin-top: 40px;
+.container form > button[type="submit"] {
+    margin-top: 40px;
 }
-#add-item-container form > button {
-  background-color: rgba(102, 102, 102, 0.3333333333);
-  border: none;
+.container form > button {
+    background-color: rgba(102, 102, 102, 0.3333333333);
+    border: none;
 }
-#add-item-container form > button:hover {
-  background-color: #666;
+.container form > button:hover {
+    background-color: #666;
 }
 
-#add-item-container.active {
-  pointer-events: visible;
-  opacity: 1;
+.container.active {
+    pointer-events: visible;
+    opacity: 1;
 }
 
 .content-wrapper {
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: -moz-max-content;
-  width: max-content;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: -moz-max-content;
+    width: max-content;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .edit-buttons button {
-  padding: 5px 20px;
-}/*# sourceMappingURL=shelf.css.map */
+    padding: 5px 20px;
+} /*# sourceMappingURL=shelf.css.map */

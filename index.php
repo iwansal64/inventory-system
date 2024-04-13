@@ -9,7 +9,7 @@ $conn = connect_to_mysql();
 $insert_result = false;
 if (isset($_POST["shelf_name"])) {
     $shelf_name = htmlspecialchars($_POST["shelf_name"]);
-    $insert_result = insert_data($conn, "shelf", "(shelf_name)", "('$shelf_name')");
+    $insert_result = insert_data($conn, "shelf", "(shelf_name)", "('$shelf_name')", "Add Shelf :($shelf_name)");
 }
 
 $shelf_datas = get_data($conn, "SELECT * FROM shelf ORDER BY id ASC");

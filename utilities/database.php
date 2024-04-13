@@ -32,27 +32,33 @@ function get_data(mysqli $conn, string $query)
     return $return_values;
 }
 
-function insert_data(mysqli $conn, string $table, string $key, string $values)
+function insert_data(mysqli $conn, string $table, string $key, string $values, string $information = "", string $link = "")
 {
-    if ($conn->query("INSERT INTO $table$key VALUES $values") === TRUE) {
+    $result = $conn->query("INSERT INTO $table$key VALUES $values") === TRUE;
+    $result_timelines = $information ? ($link == "" ? $conn->query("INSERT INTO timelines(information) VALUES ('$information')") === TRUE : $conn->query("INSERT INTO timelines(information, link) VALUES ('$information', '$link')") === TRUE) : true;
+    if ($result && $result_timelines) {
         return true;
     } else {
         return false;
     }
 }
 
-function update_data(mysqli $conn, string $table, string $params, string $new_data)
+function update_data(mysqli $conn, string $table, string $params, string $new_data, string $information = "", string $link = "")
 {
-    if ($conn->query("UPDATE $table SET $new_data WHERE $params") === TRUE) {
+    $result = $conn->query("UPDATE $table SET $new_data WHERE $params") === TRUE;
+    $result_timelines = $information ? $conn->query("INSERT INTO timelines(information, link) VALUES ('$information', '$link')") === TRUE : true;
+    if ($result && $result_timelines) {
         return true;
     } else {
         return false;
     }
 }
 
-function delete_data(mysqli $conn, string $table, string $params)
+function delete_data(mysqli $conn, string $table, string $params, string $information = "", string $link = "")
 {
-    if ($conn->query("DELETE FROM $table WHERE $params") === TRUE) {
+    $result = $conn->query("DELETE FROM $table WHERE $params") === TRUE;
+    $result_timelines = $information ? $conn->query("INSERT INTO timelines(information, link) VALUES ('$information', '$link')") === TRUE : true;
+    if ($result && $result_timelines) {
         return true;
     } else {
         return false;
