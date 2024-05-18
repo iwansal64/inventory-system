@@ -6,7 +6,14 @@ include_once ("./utilities/security.php");
 
 login_or_redirect();
 $conn = connect_to_mysql();
-$admin_datas = get_data($conn, "SELECT * FROM admins");
+
+$admin_datas = [];
+if (isset($_GET["s"])) {
+    $search = $_GET["s"];
+    $admin_datas = get_data($conn, "SELECT * FROM admins WHERE name LIKE '%$search%' OR email LIKE '%$search%'");
+} else {
+    $admin_datas = get_data($conn, "SELECT * FROM admins");
+}
 
 ?>
 
@@ -33,7 +40,7 @@ $admin_datas = get_data($conn, "SELECT * FROM admins");
                         continue;
                     } ?>
                     <div class="header">
-                        <?= underscore_strip($key) ?>
+                        <?= underscore_uppercase($key) ?>
                     </div>
                 <?php endforeach; ?>
 
@@ -51,6 +58,7 @@ $admin_datas = get_data($conn, "SELECT * FROM admins");
         <?php else: ?>
         <?php endif; ?>
     </div>
+    <script src="./table.js"></script>
 </body>
 
 </html>

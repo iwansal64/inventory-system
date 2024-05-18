@@ -12,7 +12,7 @@ $insert_result = false;
 if (isset($_POST["item_name"]) && isset($_POST["item_shelf_name"])) {
     $item_name = htmlspecialchars($_POST["item_name"]);
     $item_shelf_name = htmlspecialchars($_POST["item_shelf_name"]);
-    $insert_result = insert_data($conn, "items", "(item_name, item_shelf)", "('$item_name', '$item_shelf_name')", "Inserting Item : ($item_name) to ($item_shelf_name)");
+    $insert_result = insert_data($conn, "items", "(item_name, item_shelf)", "('$item_name', '$item_shelf_name')", "Inserting Item : ($item_name) to ($item_shelf_name)", "./item.php?item_name=$item_name");
 } else if (isset($_POST["delete"]) && isset($_POST["shelf_name"])) {
     $shelf_name = $_POST["shelf_name"];
     delete_data($conn, "shelf", "shelf_name='$shelf_name'", "Delete Shelf : ($shelf_name)");
@@ -21,20 +21,54 @@ if (isset($_POST["item_name"]) && isset($_POST["item_shelf_name"])) {
 
 $item_datas = array();
 $shelf_id = false;
+$shelf_name = false;
 $selected_shelf_name = "";
-if (isset($_GET["id"])) {
-    $shelf_id = htmlspecialchars($_GET["id"]);
+if (isset($_GET["id"]) || isset($_GET["shelf_name"])) {
+
+    $shelf_id = "";
+    $shelf_name = "";
+
+    if (isset($_GET["id"])) {
+        $shelf_id = htmlspecialchars($_GET["id"]);
+    }
+
+    if (isset($_GET["shelf_name"])) {
+        $shelf_name = htmlspecialchars($_GET["shelf_name"]);
+    }
+
+    $selector = "";
+
     foreach ($shelf_datas as $index => $shelf_data) {
         foreach ($shelf_data as $key => $value) {
-            if ($key == "id" && $value == $shelf_id) {
+            if (($key == "id" && $value == $shelf_id) || ($key == "shelf_name" && $value == $shelf_name)) {
                 $selected_shelf_name = $shelf_data["shelf_name"];
-                $item_datas = get_data($conn, "SELECT * FROM items WHERE item_shelf='$selected_shelf_name'");
+                if ($selector != "") {
+                    $selector += " OR item_shelf='$selected_shelf_name'";
+                } else {
+                    $selector = "item_shelf='$selected_shelf_name'";
+                }
             }
         }
     }
+
+    if ($selector) {
+        $item_datas = get_data($conn, "SELECT * FROM items WHERE $selector");
+    } else {
+        header("Location: ./");
+    }
 } else {
-    $item_datas = get_data($conn, "SELECT * FROM items");
+    if (isset($_GET["s"])) {
+        $search = $_GET["s"];
+        $item_datas = get_data($conn, "SELECT * FROM items WHERE item_name LIKE '%$search%' OR item_shelf LIKE '%$search%'");
+    } else {
+        $item_datas = get_data($conn, "SELECT * FROM items");
+    }
 }
+
+if (isset($_GET["export_excel"])) {
+    export_excel($item_datas, "data-item");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +81,7 @@ if (isset($_GET["id"])) {
     <link rel="stylesheet" href="styles/shelf.css">
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/table.css">
+    <link rel="stylesheet" href="styles/other_buttons.css">
 </head>
 
 <body>
@@ -56,7 +91,7 @@ if (isset($_GET["id"])) {
         <?php if ($selected_shelf_name != ""): ?>
             <h1 class="shelf-name"><?= ucwords($selected_shelf_name) ?> shelf</h1>
         <?php endif; ?>
-        <?php if ($shelf_id): ?>
+        <?php if ($shelf_id || $shelf_name): ?>
             <div class="edit-buttons">
                 <button class="add-item" onclick="document.getElementById('add-item-container').classList.add('active');">Add Item +</button>
                 <button class="delete-shelf" onclick="document.getElementById('delete-shelf-container').classList.add('active');">Delete Shelf</button>
@@ -64,38 +99,43 @@ if (isset($_GET["id"])) {
         <?php endif; ?>
         <?php $key_excpetions = array("first_add_datetime"); ?>
         <?php if (count($item_datas) > 0): ?>
-            <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($item_datas[0]) + 1 - count($key_excpetions)) ?>;">
-                <?php foreach (array_keys($item_datas[0]) as $key): ?>
-                    <?php if (in_array($key, $key_excpetions)) {
-                        continue;
-                    } ?>
-                    <div class="header">
-                        <?= underscore_strip($key) ?>
-                    </div>
-                <?php endforeach; ?>
-                <div class="header"></div>
-
-                <?php foreach ($item_datas as $index => $item_data): ?>
-                    <?php foreach ($item_data as $key => $value): ?>
+            <div class="table_container">
+                <div class="other_buttons">
+                    <button onclick="window.location.href = window.location.href+'?export_excel'; ">Export Excel</button>
+                </div>
+                <div class="table" style="grid-template-columns: <?= str_repeat('1fr ', count($item_datas[0]) + 1 - count($key_excpetions)) ?>;">
+                    <?php foreach (array_keys($item_datas[0]) as $key): ?>
                         <?php if (in_array($key, $key_excpetions)) {
                             continue;
                         } ?>
-                        <div class="row">
-                            <?= ucwords($value) ?>
+                        <div class="header">
+                            <?= underscore_uppercase($key) ?>
                         </div>
                     <?php endforeach; ?>
-                    <?php $borrow_id = $item_data["id"]; ?>
-                    <div class="row action-button">
-                        <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
-                    </div>
-                <?php endforeach; ?>
+                    <div class="header"></div>
+
+                    <?php foreach ($item_datas as $index => $item_data): ?>
+                        <?php foreach ($item_data as $key => $value): ?>
+                            <?php if (in_array($key, $key_excpetions)) {
+                                continue;
+                            } ?>
+                            <div class="row">
+                                <?= ucwords($value) ?>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php $borrow_id = $item_data["id"]; ?>
+                        <div class="row action-button">
+                            <button onclick="window.location.href='./item.php?id=<?= $borrow_id ?>'">Action</button>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php else: ?>
             <h1>No Item Yet..</h1>
         <?php endif; ?>
     </div>
 
-    <?php if ($shelf_id): ?>
+    <?php if ($shelf_id || $shelf_name): ?>
         <div class="container" id="delete-shelf-container">
             <form action="" method="post">
                 <?php $shelf_name = $shelf_data["shelf_name"]; ?>
@@ -155,6 +195,7 @@ if (isset($_GET["id"])) {
     }
     ?>
 
+    <script src="./table.js"></script>
 </body>
 
 </html>

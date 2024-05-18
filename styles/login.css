@@ -16,6 +16,12 @@ form {
     gap: 10px;
 }
 
+@media (max-width: 500px) {
+    form {
+        padding: 10px 20px 24px 20px;
+    }
+}
+
 .title {
     text-align: center;
 }

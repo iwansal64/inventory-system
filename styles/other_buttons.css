@@ -1,0 +1,12 @@
+.table {
+    left: 0 !important;
+    transform: translate(0) !important;
+}
+
+.table_container {
+    margin-top: 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+}

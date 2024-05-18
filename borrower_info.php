@@ -75,10 +75,10 @@ $borrowers_data = get_data($conn, "SELECT * FROM borrow WHERE id=$borrowers_id")
             <?php foreach ($borrowers_data as $key => $value): ?>
                 <div>
                     <h2 class="key">
-                        <?= underscore_strip($key) ?>
+                        <?= underscore_uppercase($key) ?>
                     </h2>
                     <h2 class="value">
-                        <?= underscore_strip($value) ?>
+                        <?= underscore_uppercase($value) ?>
                     </h2>
                 </div>
             <?php endforeach; ?>

@@ -1,62 +1,63 @@
 body {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 @media (min-width: 600px) {
-  body {
-    padding: 50px;
-  }
+    body {
+        padding: 50px;
+    }
 }
 @media (max-width: 600px) {
-  body {
-    padding: 20px;
-  }
+    body {
+        padding: 20px;
+    }
 }
 
 button {
-  width: 50px;
-  padding: 5px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.25s;
+    width: 50px;
+    padding: 5px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.25s;
 }
 
 button:hover {
-  background-color: #fff;
-  color: black;
+    background-color: #fff;
+    color: black;
 }
 
 .title {
-  font-size: 3rem;
+    font-size: 3rem;
 }
 
 div.item-info {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 div.item-info a {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .key {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .value {
-  font-weight: 300;
+    font-weight: 300;
 }
 
 .action-buttons {
-  display: flex;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: -moz-fit-content;
-  width: fit-content;
-  gap: 20px;
-}/*# sourceMappingURL=item.css.map */
+    margin-top: 50px;
+    display: flex;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: -moz-fit-content;
+    width: fit-content;
+    gap: 20px;
+} /*# sourceMappingURL=item.css.map */

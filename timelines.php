@@ -8,7 +8,13 @@ include_once ("./utilities/functions.php");
 login_or_redirect();
 
 $conn = connect_to_mysql();
-$timeline_datas = get_data($conn, "SELECT * FROM timelines");
+$timeline_datas = [];
+if (isset($_GET["s"])) {
+    $s = $_GET["s"];
+    $timeline_datas = get_data($conn, "SELECT * FROM timelines WHERE information LIKE '%$s%' ORDER BY time DESC");
+} else {
+    $timeline_datas = get_data($conn, "SELECT * FROM timelines ORDER BY time DESC");
+}
 
 ?>
 
@@ -27,18 +33,18 @@ $timeline_datas = get_data($conn, "SELECT * FROM timelines");
 <body>
     <?php navbar(); ?>
     <div class="content-wrapper">
-        <div class="table" style="grid-template-columns: repeat(<?= count($timeline_datas[0]) + 1 ?>, 1fr);">
-            <div class="header">No.</div>
+        <div class="table" style="grid-template-columns: repeat(<?= count($timeline_datas[0]) ?>, 1fr);">
             <?php foreach ($timeline_datas[0] as $key => $value): ?>
                 <div class="header"><?= $key ?></div>
             <?php endforeach; ?>
             <?php foreach ($timeline_datas as $index => $timeline_data): ?>
-                <div class="row"><?= $index + 1 ?></div>
                 <?php foreach ($timeline_data as $key => $value): ?>
-                    <div class="row">
+                    <div class="row link-button">
                         <?php if ($key == "link"): ?>
                             <?php if ($value): ?>
                                 <button onclick="window.location.href = '<?= $value ?>'">Link</button>
+                            <?php else: ?>
+                                <button disabled>No Link</button>
                             <?php endif; ?>
                         <?php else: ?>
                             <?= $value ?>

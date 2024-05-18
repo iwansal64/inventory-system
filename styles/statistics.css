@@ -1,0 +1,100 @@
+.main-title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+/*/ Graph Styling  */
+div.graph {
+    position: relative;
+    border-radius: 15px;
+    margin: auto;
+}
+
+div.graph .grid {
+    position: absolute;
+    background-color: #111;
+}
+
+div.graph .grid-x {
+    width: 100%;
+    height: 1px;
+}
+
+div.graph .grid-y {
+    width: 1px;
+    height: 100%;
+}
+
+div.graph .point {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    background-color: #111;
+}
+
+div.graph .line {
+    position: absolute;
+    height: 3px;
+    transform-origin: 50% 50%;
+    background-color: #111;
+}
+
+div.graph .axis-number {
+    position: absolute;
+}
+
+div.graph .axis-number.x-axis {
+    transform: translate(-50%, 25%);
+    width: max-content;
+}
+
+div.graph .axis-number.y-axis {
+    transform: translate(-175%, -50%);
+}
+
+div.graph .axis-number.origin {
+    transform: translate(-175%, 25%);
+}
+
+div.graph .data {
+    display: none;
+    visibility: collapse;
+}
+
+div.graph .x-scroll-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: visible;
+}
+
+div.graph .x-scroll-wrapper {
+    width: 100%;
+    height: 110%;
+    overflow-y: visible;
+    overflow-x: auto;
+}
+
+.graph.borrow-data {
+    width: 70%;
+    height: 70%;
+    background-color: #333;
+}
+
+div.stats-container {
+    width: 100%;
+    height: 100%;
+}
+
+div.stats-container > .stats-title {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 600px) {
+}

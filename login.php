@@ -3,51 +3,53 @@
 include_once ("./utilities/database.php");
 include_once ("./utilities/functions.php");
 include_once ("./utilities/security.php");
-
 if (check_login()) {
     header("Location: ./");
-}
+    die;
+} else {
+    if (isset($_POST["pass"]) && isset($_POST["account"])) {
+        //? Login activities
+        $pass = $_POST["pass"];
+        $account = $_POST["account"];
 
-if (isset($_POST["pass"]) && isset($_POST["account"])) {
-    var_dump("TEST");
+        $conn = connect_to_mysql();
+        $datas = get_data($conn, "SELECT * FROM admins WHERE email='$account' OR name='$account'");
 
-    $pass = $_POST["pass"];
-    $account = $_POST["account"];
+        if (count($datas) == 0) {
+            alert("user not found!");
+        } else {
+            foreach ($datas as $admin_datas) {
+                if (password_verify($pass, $admin_datas["password"])) {
+                    $data_pass = $admin_datas["password"];
+                    $current_date_time = date("Y-m-d H:i:s");
+                    $result = update_data($conn, "admins", "password='$data_pass'", "last_login_datetime='$current_date_time'", "Login Attempt To ($account)");
 
-    $conn = connect_to_mysql();
-    $datas = get_data($conn, "SELECT * FROM admins WHERE email='$account' OR name='$account'");
+                    if ($result) {
+                        //? Successfully Login!
+                        $hashed_name = password_hash($admin_datas["name"], PASSWORD_DEFAULT);
+                        $hashed_email = password_hash($admin_datas["email"], PASSWORD_DEFAULT);
 
-    if (count($datas) == 0) {
-        alert("user not found!");
-    } else {
-        foreach ($datas as $admin_datas) {
-            if (password_verify($pass, $admin_datas["password"])) {
-                $data_pass = $admin_datas["password"];
-                $current_date_time = date("Y-m-d H:i:s");
-                $result = update_data($conn, "admins", "password='$data_pass'", "last_login='$current_date_time'");
+                        $result_data = $hashed_name . $user_login_delimiter . $hashed_email . $user_login_delimiter . $pass;
 
-                if ($result) {
-                    $hashed_name = password_hash($admin_datas["name"], PASSWORD_DEFAULT);
-                    $hashed_email = password_hash($admin_datas["email"], PASSWORD_DEFAULT);
-
-                    $result = $hashed_name . $user_login_delimiter . $hashed_email . $user_login_delimiter . $pass;
-
-                    if (isset($_POST["remember_me"])) {
-                        setcookie("li", $result, time() + (60 * 60 * 24 * 30), "/");
+                        if (isset($_POST["remember_me"])) {
+                            setcookie("li", $result_data, time() + (60 * 60 * 24 * 30), "/");
+                        } else {
+                            if (session_status() == PHP_SESSION_NONE) {
+                                session_start();
+                            }
+                            $_SESSION["li"] = $result_data;
+                        }
+                        alert("successfully login!", "./");
                     } else {
-                        session_start();
-                        $_SESSION["li"] = $result;
+                        //? Unsuccessfully Login!
+                        $error = $conn->error;
+                        alert("can't update to database.. error: $error");
                     }
-                    alert("successfully login!", "./");
-                } else {
-                    $error = $conn->error;
-                    alert("can't update to database.. error: $error");
                 }
             }
         }
     }
 }
-
 
 ?>
 
